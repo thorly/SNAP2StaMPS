@@ -133,7 +133,7 @@ def cmdline_parser():
                         help='for geo: lon_min lon_max lat_min lat_max, ' +
                         'for rdc: start_x, end_x, start_y, end_y',
                         type=float,
-                        nargs='+')
+                        nargs=4)
     inps = parser.parse_args()
 
     return inps
@@ -161,14 +161,12 @@ if __name__ == "__main__":
     if flag not in ['geo', 'rdc']:
         sys.exit("Error flag, please set flag to geo or rdc.")
 
-    if len(region) != 4:
-        sys.exit("Error region, region length must be equal to 4.")
-
     dims = glob.glob(os.path.join(input_dir, "*.dim"))
     if len(dims) == 0:
         sys.exit(f"Cannot find any dim file in {input_dir}")
 
     if flag == 'geo':
+        region = [str(i) for i in region]
         LONMIN, LONMAX, LATMIN, LATMAX = region
         polygon = 'POLYGON (('+LONMIN+' '+LATMIN+','+LONMAX+' '+LATMIN+',' + \
         LONMAX+' '+LATMAX+','+LONMIN+' '+LATMAX+','+LONMIN+' '+LATMIN+'))'
